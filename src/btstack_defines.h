@@ -114,7 +114,9 @@ typedef uint8_t sm_key_t[16];
 // AVRCP browsing data
 #define AVRCP_BROWSING_DATA_PACKET     0x0f
 
- 
+// Mesh Provisioning PDU
+#define PROVISIONING_DATA_PACKET 0x10
+
 // debug log messages
 #define LOG_MESSAGE_PACKET      0xfc
 
@@ -1020,6 +1022,7 @@ typedef uint8_t sm_key_t[16];
 #define HCI_EVENT_A2DP_META                                0xF0
 #define HCI_EVENT_HIDS_META                                0xF1
 #define HCI_EVENT_GATTSERVICE_META                         0xF2
+#define HCI_EVENT_MESH_META                                0xF3
 
 // Potential other meta groups
 // #define HCI_EVENT_BNEP_META                                0xxx
@@ -2214,4 +2217,150 @@ typedef uint8_t sm_key_t[16];
  * @param con_handle
 */
 #define GATTSERVICE_SUBEVENT_CYCLING_POWER_BROADCAST_STOP                  0x03
+
+// MESH Meta Event Group
+
+/**
+ * @format 1
+ * @param subevent_code
+ */
+#define MESH_SUBEVENT_CAN_SEND_NOW                                          0x01
+
+/**
+ * @format 11
+ * @param subevent_code
+ * @param status
+ */
+#define MESH_PB_ADV_PDU_SENT                                                0x02
+
+/**
+ * @format 112
+ * @param subevent_code
+ * @param status
+ * @param pb_adv_cid
+ */
+#define MESH_PB_ADV_LINK_OPEN                                               0x03
+
+/**
+ * @format 112
+ * @param subevent_code
+ * @param status
+ * @param pb_adv_cid
+ */
+#define MESH_PB_ADV_LINK_CLOSED                                             0x04
+
+/**
+ * @format 121
+ * @param subevent_code
+ * @param pb_adv_cid
+ * @param attention_time in seconds
+ */
+#define MESH_PB_PROV_ATTENTION_TIMER                                        0x10
+
+/**
+ * Device Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_START_EMIT_PUBLIC_KEY_OOB                              0x11
+
+/**
+ * Device Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_STOP_EMIT_PUBLIC_KEY_OOB                               0x12
+
+/**
+ * Device Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_INPUT_OOB_REQUEST                                      0x13
+
+/**
+ * Device Role
+ * @format 124
+ * @param subevent_code
+ * @param pb_adv_cid
+ * @param output_oob number
+ */
+#define MESH_PB_PROV_START_EMIT_OUTPUT_OOB                                  0x15
+
+/**
+ * Device Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_STOP_EMIT_OUTPUT_OOB                                   0x16
+
+/**
+ * Provisioner Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_START_RECEIVE_PUBLIC_KEY_OOB                           0x17
+
+/**
+ * Provisioner Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_STOP_RECEIVE_PUBLIC_KEY_OOB                            0x18
+
+/**
+ * Provisioner Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_OUTPUT_OOB_REQUEST                                     0x19
+
+/**
+ * Provisioner Role
+ * @format 124
+ * @param subevent_code
+ * @param pb_adv_cid
+ * @param output_oob number
+ */
+#define MESH_PB_PROV_START_EMIT_INPUT_OOB                                   0x1a
+
+/**
+ * Provisioner Role
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_STOP_EMIT_INPUT_OOB                                    0x1b
+
+/**
+ * Provisioner Role
+ * @format 1212111212
+ * @param subevent_code
+ * @param pb_adv_cid
+ * @param num_elements
+ * @param algorithms
+ * @param public_key
+ * @param static_oob_type
+ * @param output_oob_size
+ * @param output_oob_action
+ * @param input_oob_size
+ * @param input_oob_action
+ */
+#define MESH_PB_PROV_CAPABILITIES                                           0x1c
+
+/**
+ * @format 12
+ * @param subevent_code
+ * @param pb_adv_cid
+ */
+#define MESH_PB_PROV_COMPLETE                                               0x1d
+
+>>>>>>> restart mesh development based on current develop and existing mesh branches
 #endif
