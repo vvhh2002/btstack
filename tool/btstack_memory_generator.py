@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import os
+import sys
 
 copyright = """/*
  * Copyright (C) 2014 BlueKitchen GmbH
@@ -187,10 +189,11 @@ list_of_structs = [
 ]
 list_of_le_structs = [
     ["gatt_client", "whitelist_entry", "sm_lookup_entry"],
-    ['mesh_network_pdu'] 
+    ['mesh_network_pdu', 'mesh_network_key'] 
 ]
 
-file_name = "../src/btstack_memory"
+btstack_root = os.path.abspath(os.path.dirname(sys.argv[0]) + '/..')
+file_name = btstack_root + "/src/btstack_memory"
 
 
 f = open(file_name+".h", "w")
