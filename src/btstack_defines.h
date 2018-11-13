@@ -2362,5 +2362,4 @@ typedef uint8_t sm_key_t[16];
  */
 #define MESH_PB_PROV_COMPLETE                                               0x1d
 
->>>>>>> restart mesh development based on current develop and existing mesh branches
 #endif
