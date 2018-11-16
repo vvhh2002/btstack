@@ -2231,28 +2231,29 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param status
  */
-#define MESH_PB_ADV_PDU_SENT                                                0x02
+#define MESH_PB_TRANSPORT_PDU_SENT                                          0x02
+
+/**
+ * @format 1121
+ * @param subevent_code
+ * @param status
+ * @param pb_transport_cid
+ * @param pb_type
+ */
+#define MESH_PB_TRANSPORT_LINK_OPEN                                         0x03
 
 /**
  * @format 112
  * @param subevent_code
  * @param status
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
-#define MESH_PB_ADV_LINK_OPEN                                               0x03
-
-/**
- * @format 112
- * @param subevent_code
- * @param status
- * @param pb_adv_cid
- */
-#define MESH_PB_ADV_LINK_CLOSED                                             0x04
+#define MESH_PB_TRANSPORT_LINK_CLOSED                                       0x04
 
 /**
  * @format 121
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  * @param attention_time in seconds
  */
 #define MESH_PB_PROV_ATTENTION_TIMER                                        0x10
@@ -2261,7 +2262,7 @@ typedef uint8_t sm_key_t[16];
  * Device Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_START_EMIT_PUBLIC_KEY_OOB                              0x11
 
@@ -2269,7 +2270,7 @@ typedef uint8_t sm_key_t[16];
  * Device Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_STOP_EMIT_PUBLIC_KEY_OOB                               0x12
 
@@ -2277,7 +2278,7 @@ typedef uint8_t sm_key_t[16];
  * Device Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_INPUT_OOB_REQUEST                                      0x13
 
@@ -2285,7 +2286,7 @@ typedef uint8_t sm_key_t[16];
  * Device Role
  * @format 124
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  * @param output_oob number
  */
 #define MESH_PB_PROV_START_EMIT_OUTPUT_OOB                                  0x15
@@ -2294,7 +2295,7 @@ typedef uint8_t sm_key_t[16];
  * Device Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_STOP_EMIT_OUTPUT_OOB                                   0x16
 
@@ -2302,7 +2303,7 @@ typedef uint8_t sm_key_t[16];
  * Provisioner Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_START_RECEIVE_PUBLIC_KEY_OOB                           0x17
 
@@ -2310,7 +2311,7 @@ typedef uint8_t sm_key_t[16];
  * Provisioner Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_STOP_RECEIVE_PUBLIC_KEY_OOB                            0x18
 
@@ -2318,7 +2319,7 @@ typedef uint8_t sm_key_t[16];
  * Provisioner Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_OUTPUT_OOB_REQUEST                                     0x19
 
@@ -2326,7 +2327,7 @@ typedef uint8_t sm_key_t[16];
  * Provisioner Role
  * @format 124
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  * @param output_oob number
  */
 #define MESH_PB_PROV_START_EMIT_INPUT_OOB                                   0x1a
@@ -2335,7 +2336,7 @@ typedef uint8_t sm_key_t[16];
  * Provisioner Role
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_STOP_EMIT_INPUT_OOB                                    0x1b
 
@@ -2343,7 +2344,7 @@ typedef uint8_t sm_key_t[16];
  * Provisioner Role
  * @format 1212111212
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  * @param num_elements
  * @param algorithms
  * @param public_key
@@ -2358,7 +2359,7 @@ typedef uint8_t sm_key_t[16];
 /**
  * @format 12
  * @param subevent_code
- * @param pb_adv_cid
+ * @param pb_transport_cid
  */
 #define MESH_PB_PROV_COMPLETE                                               0x1d
 
