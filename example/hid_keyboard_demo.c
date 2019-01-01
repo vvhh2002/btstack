@@ -36,6 +36,7 @@
  */
 
 #define __BTSTACK_FILE__ "hid_keyboard_demo.c"
+#define HAVE_BTSTACK_STDIN
  
 // *****************************************************************************
 /* EXAMPLE_START(hid_keyboard_demo): HID Keyboard (Server) Demo
@@ -176,7 +177,9 @@ static bd_addr_t device_addr;
 static uint8_t hid_boot_device = 0;
 
 #ifdef HAVE_BTSTACK_STDIN
-static const char * device_addr_string = "BC:EC:5D:E6:15:03";
+// static const char * device_addr_string = "BC:EC:5D:E6:15:03";
+// static const char * device_addr_string = "48:BF:6B:97:D4:A9";
+static const char * device_addr_string = "B4:BF:F6:EE:DD:0A";
 #endif
 
 static enum {

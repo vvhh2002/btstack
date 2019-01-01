@@ -36,7 +36,7 @@
  */
 
 #define __BTSTACK_FILE__ "a2dp_sink_demo.c"
-
+#define HAVE_BTSTACK_STDIN
 /*
  * a2dp_sink_demo.c
  */
@@ -150,7 +150,8 @@ typedef struct {
 // pts: static bd_addr_t remote = {0x00, 0x1B, 0xDC, 0x08, 0x0A, 0xA5};
 // mac 2013: static const char * device_addr_string = "84:38:35:65:d1:15";
 // iPhone 5S: 
-static const char * device_addr_string = "54:E4:3A:26:A2:39";
+// static const char * device_addr_string = "54:E4:3A:26:A2:39";
+static const char * device_addr_string = "48:BF:6B:97:D4:A9";
 #endif
 
 static uint8_t  sdp_avdtp_sink_service_buffer[150];
@@ -654,6 +655,8 @@ static void hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *p
         bd_addr_t address;
         printf("Pin code request - using '0000'\n");
         hci_event_pin_code_request_get_bd_addr(packet, address);
+        // device_addr=address;
+        memcpy(device_addr,address,sizeof(bd_addr_t));
         gap_pin_code_response(address, "0000");
     }
 }

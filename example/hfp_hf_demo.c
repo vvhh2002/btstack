@@ -35,7 +35,7 @@
  * contact@bluekitchen-gmbh.com
  *
  */
-
+#define HAVE_BTSTACK_STDIN
 #define __BTSTACK_FILE__ "hfp_hf_demo.c"
 
 /*
@@ -59,6 +59,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "btstack.h"
+#include <inttypes.h>
+
 
 #include "sco_demo_util.h"
 
@@ -67,7 +69,7 @@ const uint8_t   rfcomm_channel_nr = 1;
 const char hfp_hf_service_name[] = "HFP HF Demo";
 
 #ifdef HAVE_BTSTACK_STDIN
-static const char * device_addr_string = "00:1B:DC:08:0A:A5";
+static const char * device_addr_string = "48:BF:6B:97:D4:A9";
 #endif
 
 static bd_addr_t device_addr;
@@ -439,13 +441,44 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t * even
     UNUSED(channel);
     
     switch (packet_type){
+       
 
         case HCI_SCO_DATA_PACKET:
             sco_demo_receive(event, event_size);
             break;
-
+        bd_addr_t event_addr;
         case HCI_EVENT_PACKET:
             switch (event[0]){
+
+                case SM_EVENT_JUST_WORKS_REQUEST:
+                    printf("Just Works requested\n");
+                    sm_just_works_confirm(sm_event_just_works_request_get_handle(event));
+                    break;
+                case SM_EVENT_NUMERIC_COMPARISON_REQUEST:
+                    printf("Confirming numeric comparison: %"PRIu32"\n", sm_event_numeric_comparison_request_get_passkey(event));
+                    sm_numeric_comparison_confirm(sm_event_passkey_display_number_get_handle(event));
+                    break;
+                case SM_EVENT_PASSKEY_DISPLAY_NUMBER:
+                    printf("Display Passkey: %"PRIu32"\n", sm_event_passkey_display_number_get_passkey(event));
+                    break;
+                 case HCI_EVENT_PIN_CODE_REQUEST:
+                    // inform about pin code request
+                    printf("Pin code request - using '0000'\n");
+                    
+                    hci_event_pin_code_request_get_bd_addr(event, event_addr);
+                    gap_pin_code_response(event_addr, "0000");
+                    memcpy(device_addr,event_addr,sizeof(bd_addr_t));
+                    break;
+                case HCI_EVENT_LINK_KEY_REQUEST:
+                     printf("HCI_EVENT_LINK_KEY_REQUEST\n");
+                     hci_event_link_key_request_get_bd_addr(event, event_addr);
+					 hci_send_cmd(&hci_link_key_request_negative_reply, &event_addr);
+                     break;
+                case HCI_EVENT_USER_CONFIRMATION_REQUEST:
+                    // inform about user confirmation request
+                    printf(" User Confirmation Request with numeric value '%"PRIu32"'\n", little_endian_read_32(event, 8));
+                    printf(" User Confirmation Auto accept\n");
+                    break;
                 case HCI_EVENT_SCO_CAN_SEND_NOW:
                     sco_demo_send(sco_handle);
                     break;
@@ -562,14 +595,20 @@ int btstack_main(int argc, const char * argv[]){
     (void)argc;
     (void)argv;
 
+    
     sco_demo_init();
 
     gap_discoverable_control(1);
     gap_set_class_of_device(0x200408);   
+    // gap_set_bondable_mode(1);
+    gap_discoverable_control(1);
+    gap_ssp_set_io_capability(SSP_IO_CAPABILITY_DISPLAY_YES_NO);
     gap_set_local_name("HFP HF Demo 00:00:00:00:00:00");
 
+    printf("Start!-1\n");
     // init L2CAP
     l2cap_init();
+    printf("Start!-2\n");
 
     uint16_t hf_supported_features          =
         (1<<HFP_HFSF_ESCO_S4)               |
@@ -581,17 +620,20 @@ int btstack_main(int argc, const char * argv[]){
     int wide_band_speech = 1;
 
     rfcomm_init();
+    // sm_init();
+    //  sm_set_io_capabilities(IO_CAPABILITY_DISPLAY_ONLY);
+    // sm_set_authentication_requirements(SM_AUTHREQ_SECURE_CONNECTION | SM_AUTHREQ_BONDING);
     hfp_hf_init(rfcomm_channel_nr);
     hfp_hf_init_supported_features(hf_supported_features);
     hfp_hf_init_hf_indicators(sizeof(indicators)/sizeof(uint16_t), indicators);
     hfp_hf_init_codecs(sizeof(codecs), codecs);
-    
+     printf("Start!-3\n");
     sdp_init();    
     memset(hfp_service_buffer, 0, sizeof(hfp_service_buffer));
     hfp_hf_create_sdp_record(hfp_service_buffer, 0x10001, rfcomm_channel_nr, hfp_hf_service_name, hf_supported_features, wide_band_speech);
     printf("SDP service record size: %u\n", de_get_len(hfp_service_buffer));
     sdp_register_service(hfp_service_buffer);
-
+  printf("Start!-4\n");
     // register for HCI events and SCO packets
     hci_event_callback_registration.callback = &packet_handler;
     hci_add_event_handler(&hci_event_callback_registration);
@@ -600,14 +642,17 @@ int btstack_main(int argc, const char * argv[]){
 
     // register for HFP events
     hfp_hf_register_packet_handler(packet_handler);
-
+  printf("Start!-5\n");
 #ifdef HAVE_BTSTACK_STDIN
     // parse human readable Bluetooth address
     sscanf_bd_addr(device_addr_string, device_addr);
+     printf("Start!-5-1,%s\n",device_addr_string);
     btstack_stdin_setup(stdin_process);
+    printf("Start!-5-2\n");
 #endif
     // turn on!
     hci_power_control(HCI_POWER_ON);
+    printf("Start!-6\n");
     return 0;
 }
 /* LISTING_END */
