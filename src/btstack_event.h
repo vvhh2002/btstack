@@ -7301,6 +7301,16 @@ static inline uint16_t gattservice_subevent_cycling_power_broadcast_stop_get_con
 }
 
 
+/**
+ * @brief Get field con_handle from event MESH_SUBEVENT_MESSAGE_SENT
+ * @param event packet
+ * @return con_handle
+ * @note: btstack_type H
+ */
+static inline hci_con_handle_t mesh_subevent_message_sent_get_con_handle(const uint8_t * event){
+    return little_endian_read_16(event, 3);
+}
+
 
 
 /* API_END */
