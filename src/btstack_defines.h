@@ -2253,7 +2253,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param status
  */
-#define MESH_PB_TRANSPORT_PDU_SENT                                          0x02
+#define MESH_SUBEVENT_PB_TRANSPORT_PDU_SENT                                          0x02
 
 /**
  * @format 1121
@@ -2262,7 +2262,7 @@ typedef uint8_t sm_key_t[16];
  * @param pb_transport_cid
  * @param pb_type
  */
-#define MESH_PB_TRANSPORT_LINK_OPEN                                         0x03
+#define MESH_SUBEVENT_PB_TRANSPORT_LINK_OPEN                                         0x03
 
 /**
  * @format 112
@@ -2270,7 +2270,7 @@ typedef uint8_t sm_key_t[16];
  * @param status
  * @param pb_transport_cid
  */
-#define MESH_PB_TRANSPORT_LINK_CLOSED                                       0x04
+#define MESH_SUBEVENT_PB_TRANSPORT_LINK_CLOSED                                       0x04
 
 /**
  * @format 121
@@ -2278,7 +2278,7 @@ typedef uint8_t sm_key_t[16];
  * @param pb_transport_cid
  * @param attention_time in seconds
  */
-#define MESH_PB_PROV_ATTENTION_TIMER                                        0x10
+#define MESH_SUBEVENT_PB_PROV_ATTENTION_TIMER                                        0x10
 
 /**
  * Device Role
@@ -2286,7 +2286,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_START_EMIT_PUBLIC_KEY_OOB                              0x11
+#define MESH_SUBEVENT_PB_PROV_START_EMIT_PUBLIC_KEY_OOB                              0x11
 
 /**
  * Device Role
@@ -2294,7 +2294,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_STOP_EMIT_PUBLIC_KEY_OOB                               0x12
+#define MESH_SUBEVENT_PB_PROV_STOP_EMIT_PUBLIC_KEY_OOB                               0x12
 
 /**
  * Device Role
@@ -2302,7 +2302,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_INPUT_OOB_REQUEST                                      0x13
+#define MESH_SUBEVENT_PB_PROV_INPUT_OOB_REQUEST                                      0x13
 
 /**
  * Device Role
@@ -2311,7 +2311,7 @@ typedef uint8_t sm_key_t[16];
  * @param pb_transport_cid
  * @param output_oob number
  */
-#define MESH_PB_PROV_START_EMIT_OUTPUT_OOB                                  0x15
+#define MESH_SUBEVENT_PB_PROV_START_EMIT_OUTPUT_OOB                                  0x15
 
 /**
  * Device Role
@@ -2319,7 +2319,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_STOP_EMIT_OUTPUT_OOB                                   0x16
+#define MESH_SUBEVENT_PB_PROV_STOP_EMIT_OUTPUT_OOB                                   0x16
 
 /**
  * Provisioner Role
@@ -2327,7 +2327,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_START_RECEIVE_PUBLIC_KEY_OOB                           0x17
+#define MESH_SUBEVENT_PB_PROV_START_RECEIVE_PUBLIC_KEY_OOB                           0x17
 
 /**
  * Provisioner Role
@@ -2335,7 +2335,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_STOP_RECEIVE_PUBLIC_KEY_OOB                            0x18
+#define MESH_SUBEVENT_PB_PROV_STOP_RECEIVE_PUBLIC_KEY_OOB                            0x18
 
 /**
  * Provisioner Role
@@ -2343,7 +2343,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_OUTPUT_OOB_REQUEST                                     0x19
+#define MESH_SUBEVENT_PB_PROV_OUTPUT_OOB_REQUEST                                     0x19
 
 /**
  * Provisioner Role
@@ -2352,7 +2352,7 @@ typedef uint8_t sm_key_t[16];
  * @param pb_transport_cid
  * @param output_oob number
  */
-#define MESH_PB_PROV_START_EMIT_INPUT_OOB                                   0x1a
+#define MESH_SUBEVENT_PB_PROV_START_EMIT_INPUT_OOB                                   0x1a
 
 /**
  * Provisioner Role
@@ -2360,7 +2360,7 @@ typedef uint8_t sm_key_t[16];
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_STOP_EMIT_INPUT_OOB                                    0x1b
+#define MESH_SUBEVENT_PB_PROV_STOP_EMIT_INPUT_OOB                                    0x1b
 
 /**
  * Provisioner Role
@@ -2376,14 +2376,14 @@ typedef uint8_t sm_key_t[16];
  * @param input_oob_size
  * @param input_oob_action
  */
-#define MESH_PB_PROV_CAPABILITIES                                           0x1c
+#define MESH_SUBEVENT_PB_PROV_CAPABILITIES                                           0x1c
 
 /**
  * @format 12
  * @param subevent_code
  * @param pb_transport_cid
  */
-#define MESH_PB_PROV_COMPLETE                                               0x1d
+#define MESH_SUBEVENT_PB_PROV_COMPLETE                                               0x1d
 
 /**
  * @format 11H
@@ -2391,21 +2391,21 @@ typedef uint8_t sm_key_t[16];
  * @param status
  * @param con_handle
  */
-#define MESH_PROXY_CONNECTED                                                0x20
+#define MESH_SUBEVENT_PROXY_CONNECTED                                                0x20
 
 /**
  * @format 1H
  * @param subevent_code
  * @param con_handle
  */
-#define MESH_PROXY_PDU_SENT                                                 0x21
+#define MESH_SUBEVENT_PROXY_PDU_SENT                                                 0x21
 
 /**
  * @format 1H
  * @param subevent_code
  * @param con_handle
  */
-#define MESH_PROXY_DISCONNECTED                                             0x22
+#define MESH_SUBEVENT_PROXY_DISCONNECTED                                             0x22
 
 /**
  * @format 1H
