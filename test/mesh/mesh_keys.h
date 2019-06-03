@@ -49,6 +49,13 @@ extern "C"
 #include <stdint.h>
 #include "ble/mesh/mesh_network.h"
 
+
+typedef enum {
+    MESH_KEY_REFRESH_NOT_ACTIVE = 0,
+    MESH_KEY_REFRESH_FIRST_PHASE,
+    MESH_KEY_REFRESH_SECOND_PHASE
+} mesh_key_refresh_state_t;
+
 typedef struct {
     btstack_linked_item_t item;
 
@@ -72,8 +79,8 @@ typedef struct {
     uint8_t encryption_key[16];
     uint8_t privacy_key[16];
 
-    // key refresth
-    uint8_t key_refresh;
+    // key refresh 
+    mesh_key_refresh_state_t key_refresh;
 
     // subnet state
     uint8_t node_id_advertisement_running;
