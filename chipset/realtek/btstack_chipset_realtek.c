@@ -48,6 +48,7 @@
 #include <inttypes.h>
 #include <stddef.h> /* NULL */
 #include <stdio.h>
+#include <stdlib.h> /* getenv, malloc, free */
 #include <string.h> /* memcpy */
 
 #include "btstack_control.h"
@@ -295,6 +296,7 @@ static const patch_info_usb fw_patch_table_usb[] = {
     {0xc03f, 0x8822, "mp_rtl8822cu_fw", "rtl8822cu_fw", "rtl8822cu_config", NULL, 0, RTL8822CU}, /* RTL8822CE-VS */
 
     {0x8771, 0x8761, "mp_rtl8761b_fw", "rtl8761bu_fw", "rtl8761bu_config", NULL, 0, RTL8761BU}, /* RTL8761BU only */
+    {0xa729, 0x8761, "mp_rtl8761b_fw", "rtl8761bu_fw", "rtl8761bu_config", NULL, 0, RTL8761BU}, /* RTL8761BUV/WBS */
     {0xa725, 0x8761, "mp_rtl8761b_fw", "rtl8725au_fw", "rtl8725au_config", NULL, 0, RTL8761BU}, /* RTL8725AU */
     {0xa72A, 0x8761, "mp_rtl8761b_fw", "rtl8725au_fw", "rtl8725au_config", NULL, 0, RTL8761BU}, /* RTL8725AU BT only */
 
@@ -493,6 +495,27 @@ enum { FW_DONE, FW_MORE_TO_DO };
 
 #ifdef HAVE_POSIX_FILE_IO
 
+static FILE * open_file_with_linux_firmware_fallback(const char *name, char *effective_name, size_t effective_name_size) {
+    FILE *candidate = fopen(name, "rb");
+    if (candidate != NULL) {
+        btstack_strcpy(effective_name, effective_name_size, name);
+        return candidate;
+    }
+
+    const char *base_name = strrchr(name, '/');
+    base_name = base_name != NULL ? base_name + 1 : name;
+    if (strchr(base_name, '.') != NULL) {
+        return NULL;
+    }
+
+    const char *firmware_root = getenv("BTSTACK_REALTEK_FIRMWARE_ROOT");
+    if (firmware_root == NULL || firmware_root[0] == '\0') {
+        firmware_root = "/lib/firmware/rtl_bt";
+    }
+    btstack_snprintf_assert_complete(effective_name, effective_name_size, "%s/%s.bin", firmware_root, base_name);
+    return fopen(effective_name, "rb");
+}
+
 /**
  * @brief Opens the specified file and stores content to an allocated buffer
  *
@@ -503,9 +526,10 @@ enum { FW_DONE, FW_MORE_TO_DO };
  */
 static uint32_t read_file(FILE **file, uint8_t **buf, const char *name) {
     uint32_t size;
+    char effective_name[1000];
 
     // open file
-    *file = fopen(name, "rb");
+    *file = open_file_with_linux_firmware_fallback(name, effective_name, sizeof(effective_name));
     if (*file == NULL) {
         log_info("Failed to open file %s", name);
         return 0;
@@ -524,14 +548,14 @@ static uint32_t read_file(FILE **file, uint8_t **buf, const char *name) {
     if (*buf == NULL) {
         fclose(*file);
         *file = NULL;
-        log_info("Failed to allocate %u bytes for file %s", size, name);
+        log_info("Failed to allocate %u bytes for file %s", size, effective_name);
         return 0;
     }
 
     // read file
     size_t ret = fread(*buf, size, 1, *file);
     if (ret != 1) {
-        log_info("Failed to read %u bytes from file %s (ret = %d)", size, name, (int) ret);
+        log_info("Failed to read %u bytes from file %s (ret = %d)", size, effective_name, (int) ret);
         fclose(*file);
         free(*buf);
         *file = NULL;
@@ -539,7 +563,7 @@ static uint32_t read_file(FILE **file, uint8_t **buf, const char *name) {
         return 0;
     }
 
-    log_info("Opened file %s and read %u bytes", name, size);
+    log_info("Opened file %s and read %u bytes", effective_name, size);
     return size;
 }
 
