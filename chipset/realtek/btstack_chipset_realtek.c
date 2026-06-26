@@ -1292,7 +1292,7 @@ static void hci_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *p
                     chipset_prepare_download();
                     break;
                 default:
-                    btstack_assert(false);
+                    log_info("Ignoring unexpected Read Card completion in state %d", state);
                     break;
             }
             break;
